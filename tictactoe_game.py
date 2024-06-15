@@ -71,9 +71,9 @@ class Tictactoe:
 
         
 
-        
-
     def game_loop(self):
+
+    
         
         self.reset()
 
@@ -130,9 +130,66 @@ class Tictactoe:
         print("\nGame Over!")
 
 
+    def game_loop_ai(self):
+        self.reset()
+
+        self.draw_game()
+
+
+        for round in range(9):
+
+            if round % 2 == 0:
+                player = self.player1
+
+                print("Player 1's turn, enter the position (x, y): ")
+                
+                
+                while True:
+                    try:
+                        x, y = map(int, input().split())
+                        self.move(player, x, y)
+                        break
+                    except:
+                        print("Invalid move, try again!")
+                    
+                self.draw_game()
+
+                if self.winner(player):
+                    print("Player 1 wins!")
+                    break
+
+            else:
+                player = self.player2
+
+                print("Player 2's turn, enter the position (x, y): ")
+                
+
+                while True:
+                    try:
+                        x, y = map(int, input().split()) # this will be called by the AI
+                        self.move(player, x, y)
+                        break
+                    except:
+                        print("Invalid move, try again!")
+                    
+
+                self.draw_game()
+
+                if self.winner(player):
+                    print("Player 2 wins!")
+                    break
 
             
-        
+
+        print("\nGame Over!")
+            
+    
+
+    
+    
+    
+
+
 
 if __name__ == '__main__':
     game = Tictactoe()
