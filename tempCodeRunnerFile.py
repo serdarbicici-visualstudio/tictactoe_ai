@@ -3,7 +3,7 @@ import random
 
 class Agent(Tictactoe):
 
-    # agent plays player 2 (O)
+    #agent plays player 2 (O)
 
     def __init__(self):
         super().__init__()
@@ -13,9 +13,9 @@ class Agent(Tictactoe):
         # action = 0-8
         # Q-value = 0-1
 
-        self.alpha = 0.5
-        self.gamma = 0.5
-        self.epsilon = 0.9
+        self.alpha = 0.1
+        self.gamma = 0.9
+        self.epsilon = 0.1
         self.state = None
         self.action = None
         self.next_state = None
@@ -31,32 +31,13 @@ class Agent(Tictactoe):
     def get_state(self):
         return "".join(self.board)
 
-    def check_double(self, player):
-
-        # check if player can win in the next move
-        for i in range(9):
-            if self.board[i] == "-":
-                self.board[i] = player
-                if self.winner(player):
-                    self.board[i] = "-"
-                    return True
-                self.board[i] = "-"
-
-        return False
-    
-
-    
-
-
     def get_reward(self):
 
         if self.winner(self.player2):
-            return 10
+            return 1
         
         if self.winner(self.player1):
-            return -100000
-        
-        #if self.check_double
+            return -1
         
         return 0
 
@@ -121,20 +102,26 @@ class Agent(Tictactoe):
                 if self.state not in self.q_table:
                     self.q_table[self.state] = [[action, 0] for action in self.get_possible_actions()]
 
-                if len(self.q_table[self.next_state]) > 0:
-                    max_q_next = max(self.q_table[self.next_state], key=lambda x: x[1])[1]
-                else:
-                    max_q_next = 0
-
                 for entry in self.q_table[self.state]:
                     if entry[0] == self.action:
                         entry[1] += self.alpha * (
-                            reward + self.gamma * max_q_next - entry[1])
+                            reward + self.gamma * max(self.q_table[self.next_state], key=lambda x: x[1])[1] - entry[1])
 
                 self.state = self.next_state
 
-            if episode % 10 == 0:
-                print(f"Episode {episode + 1}/{episodes}")
+                if episode % 10 == 0:
+                    print(f"Episode {episode + 1}/{episodes}")
+
+
+
+
+
+
+                
+                        
+
+
+
 
     def play_with_human(self):
         
@@ -196,6 +183,7 @@ class Agent(Tictactoe):
 if __name__ == "__main__":
     # train the agent and print output, then play with human
     agent = Agent()
-    agent.train(100000)
+    agent.train(100)
 
     agent.play_with_human()
+
