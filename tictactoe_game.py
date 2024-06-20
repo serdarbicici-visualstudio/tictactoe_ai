@@ -183,13 +183,6 @@ class Tictactoe:
 
         print("\nGame Over!")
             
-    
-
-    
-    
-    
-
-
 
 if __name__ == '__main__':
     game = Tictactoe()
